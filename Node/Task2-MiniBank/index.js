@@ -6,15 +6,18 @@ app.use(express.json());
 let balance = 0;
 let transactions = [];
 
+app.get('/', (req, res) => {
+    res.send("Welcome to our mini banking application!\n You can do the following operations-\n\t1. Check Balance\n\t2. See Transactions History\n\t3. Deposit money \n\t4. Withdraw money");
+});
+
 app.get('/balance', (req, res) => {
-    res.send(`The current balance is: ${balance}`);
+    res.send(`The current balance is: $${balance}`);
 });
 
 app.get('/history', (req, res) => {
     res.send(`These are the transactions: ${JSON.stringify(transactions)}`);
 });
 
-// Route to handle deposits
 app.post('/deposit', (req, res) => {
     const { amount } = req.body;
     if (!amount || amount < 0) {
@@ -25,7 +28,6 @@ app.post('/deposit', (req, res) => {
     res.send(`Deposited: $${amount}. Current balance: $${balance}`);
 });
 
-// Route to handle withdrawals
 app.post('/withdraw', (req, res) => {
     const { amount } = req.body;
     if (!amount || amount < 0 || amount > balance) {
