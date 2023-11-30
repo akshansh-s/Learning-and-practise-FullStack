@@ -1,41 +1,40 @@
 const express = require('express');
+const User = require('./models/user');
 const app = express();
+app.use(express.json());
 
-app.use(express.json()); 
+// Create a demo user
+let demoUser = new User('akshansh');
 
-let balance = 0;
-let transactions = [];
-
-app.get('/', (req, res) => {
-    res.send("Welcome to our mini banking application!\n You can do the following operations-\n\t1. Check Balance\n\t2. See Transactions History\n\t3. Deposit money \n\t4. Withdraw money");
-});
-
-app.get('/balance', (req, res) => {
-    res.send(`The current balance is: $${balance}`);
-});
-
-app.get('/history', (req, res) => {
-    res.send(`These are the transactions: ${JSON.stringify(transactions)}`);
-});
-
+// Route to deposit money
 app.post('/deposit', (req, res) => {
     const { amount } = req.body;
     if (!amount || amount < 0) {
         return res.status(400).send('Invalid deposit amount');
     }
-    balance += amount;
-    transactions.push({ type: 'deposit', amount });
-    res.send(`Deposited: $${amount}. Current balance: $${balance}`);
+    demoUser.deposit(amount);
+    res.send(`Deposited: $${amount}. Current balance: $${demoUser.balance}`);
 });
 
+// Route to withdraw money
 app.post('/withdraw', (req, res) => {
     const { amount } = req.body;
-    if (!amount || amount < 0 || amount > balance) {
-        return res.status(400).send('Invalid withdrawal amount');
+    try {
+        demoUser.withdraw(amount);
+        res.send(`Withdrew: $${amount}. Current balance: $${demoUser.balance}`);
+    } catch (error) {
+        res.status(400).send(error.message);
     }
-    balance -= amount;
-    transactions.push({ type: 'withdraw', amount });
-    res.send(`Withdrew: $${amount}. Current balance: $${balance}`);
+});
+
+// Route to check balance
+app.get('/balance', (req, res) => {
+    res.send(`The current balance is: $${demoUser.balance}`);
+});
+
+// Route to check transaction history
+app.get('/history', (req, res) => {
+    res.send(`Transaction history: ${JSON.stringify(demoUser.transactions)}`);
 });
 
 app.listen(3000, () => {
