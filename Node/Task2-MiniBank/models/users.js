@@ -1,8 +1,14 @@
+const bcrypt = require('bcrypt');
+
 class User {
-    constructor(username) {
+    constructor(username,password,balance) {
         this.username = username;
-        this.balance = 0;
+        this.balance = balance;
+        this.initializePassword(password);
         this.transactions = [];
+    }
+    async initializePassword(password) {
+        this.hashedPassword = await bcrypt.hash(password, 10);
     }
 
     deposit(amount) {

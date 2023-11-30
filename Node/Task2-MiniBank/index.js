@@ -2,11 +2,33 @@ const express = require('express');
 const User = require('./models/user');
 const app = express();
 app.use(express.json());
+let demoUser = new User('akshansh','ilovefintech',10000);
+//Routes---
 
-// Create a demo user
-let demoUser = new User('akshansh');
+//Login
+app.post('/login', async (req, res) => { 
+    const { username, password } = req.body;
+    const user = demoUser; 
 
-// Route to deposit money
+    if (username !== user.username) {
+        return res.status(401).send("Invalid username or password");
+    }
+
+    try {
+        // Compare the plain text password with the hashed password
+        const isMatch = await bcrypt.compare(password, user.hashedPassword);
+        if (!isMatch) {
+            return res.status(401).send("Invalid username or password");
+        }
+
+        res.send(`User ${username} logged in successfully`);
+    } catch (error) {
+        // Errors during password comparison
+        res.status(500).send("An error occurred during login");
+    }
+});
+
+// Deposit money
 app.post('/deposit', (req, res) => {
     const { amount } = req.body;
     if (!amount || amount < 0) {
@@ -16,7 +38,7 @@ app.post('/deposit', (req, res) => {
     res.send(`Deposited: $${amount}. Current balance: $${demoUser.balance}`);
 });
 
-// Route to withdraw money
+// Withdraw money
 app.post('/withdraw', (req, res) => {
     const { amount } = req.body;
     try {
@@ -27,12 +49,12 @@ app.post('/withdraw', (req, res) => {
     }
 });
 
-// Route to check balance
+// Check balance
 app.get('/balance', (req, res) => {
     res.send(`The current balance is: $${demoUser.balance}`);
 });
 
-// Route to check transaction history
+// Transaction history
 app.get('/history', (req, res) => {
     res.send(`Transaction history: ${JSON.stringify(demoUser.transactions)}`);
 });
