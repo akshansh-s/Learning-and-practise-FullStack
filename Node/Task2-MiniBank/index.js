@@ -3,8 +3,8 @@ const User = require('./models/user');
 const app = express();
 app.use(express.json());
 let demoUser = new User('akshansh','ilovefintech',10000);
-//Routes---
 
+//Routes---
 //Login
 app.post('/login', async (req, res) => { 
     const { username, password } = req.body;
