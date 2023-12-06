@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('./models/user');
+const User = require('./models/users.js');
 const app = express();
 app.use(express.json());
 let demoUser = new User('akshansh','ilovefintech',10000);
