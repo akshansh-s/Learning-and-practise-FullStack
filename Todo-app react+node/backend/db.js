@@ -1,9 +1,7 @@
-require('dotenv').config();
-
+//require('dotenv').config();
 const mongoose = require('mongoose');
-
-// Use the environment variable
-mongoose.connect(process.env.MONGODB_URI);
+//console.log('MongoDB URI:', process.env.MONGO);
+mongoose.connect('mongodb+srv://admin:Mongodb%402205@cluster0.kxjojk9.mongodb.net/todos');
 
 const todoSchema = mongoose.Schema({
     title: String,
@@ -11,3 +9,6 @@ const todoSchema = mongoose.Schema({
     completed: Boolean
 });
 
+const todo = mongoose.model('todos',todoSchema);
+
+module.exports={todo}
