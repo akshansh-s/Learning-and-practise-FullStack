@@ -2,11 +2,11 @@ const express= require('express');
 const { createTodo } = require('./types');
 const {todo}=require("./db");
 const app =express();
+const cors=require("cors");
 const port=3000;
 
-
 app.use(express.json());
-
+app.use(cors());
 
 app.post('/todo', async (req,res)=>{
     const createPayload=req.body;
