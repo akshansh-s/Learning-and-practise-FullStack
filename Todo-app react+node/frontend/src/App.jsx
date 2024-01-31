@@ -15,10 +15,11 @@ function App() {
   }, [])
   return (
     <>
-      <div>
+      <div><center>
+        <h1>Todo App Using React, Express, Mongodb</h1>
         <CreateTodo></CreateTodo>
         <Todos todos={todos}></Todos>
-      </div>
+      </center></div>
     </>
   )
 }
