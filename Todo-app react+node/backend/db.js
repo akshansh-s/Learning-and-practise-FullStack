@@ -1,7 +1,8 @@
-//require('dotenv').config();
+require('dotenv').config();
 const mongoose = require('mongoose');
-//console.log('MongoDB URI:', process.env.MONGO);
-mongoose.connect('mongodb+srv://admin:Mongodb%402205@cluster0.kxjojk9.mongodb.net/todos');
+//const MONGO = process.env.MONGO;
+console.log('MongoDB URI:', process.env.MONGO);
+mongoose.connect(process.env.MONGO);
 
 const todoSchema = mongoose.Schema({
     title: String,
