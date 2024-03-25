@@ -5,14 +5,17 @@ ol li {
   html, body {
     height: 100%;
     margin: 0;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
+    
   }
   
   .container {
     width: 100%; 
     max-width: 600px; 
     margin: 0 auto;
+    
   }
   

@@ -1,0 +1,12 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/styles.css' %}">
+
+<center>
+  <h2>Add Choice for "{{ question.question_txt }}"</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Choice</button>
+  </form>
+  <a href="{% url 'polls:detail' question.id %}">Done adding choices</a>
+</center>

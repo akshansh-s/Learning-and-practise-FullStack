@@ -1,0 +1,12 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/styles.css' %}">
+<center>
+{% block content %}
+  <h2>Create New Poll</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ q_form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}
+</center>
