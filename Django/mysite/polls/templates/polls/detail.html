@@ -23,5 +23,14 @@
             {% endfor %}
         </fieldset>
         <input type="submit" value="Vote">
+        <br><br>
+        <a href="{% url 'polls:delete_poll' question.id %}">Delete this question</a><br><br>
+
+        {% for choice in question.choice_set.all %}
+        <div>
+            {{ choice.choice_text }}
+            <a href="{% url 'polls:delete_choice' choice.id %}">Delete this choice</a>
+        </div>
+        {% endfor %}
         </form>
 </center>

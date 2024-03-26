@@ -19,6 +19,15 @@ def index(request):
     context = {"latest_question_list": latest_question_list}
     return render(request, "polls/index.html", context)
 
+# class DetailView(generic.DetailView):
+#     model = Question
+#     template_name = "polls/detail.html"
+
+
+# class ResultsView(generic.DetailView):
+#     model = Question
+#     template_name = "polls/results.html"
+
 def detail(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
@@ -29,16 +38,6 @@ def detail(request, question_id):
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
-
-# class DetailView(generic.DetailView):
-#     model = Question
-#     template_name = "polls/detail.html"
-
-
-# class ResultsView(generic.DetailView):
-#     model = Question
-#     template_name = "polls/results.html"
-
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -56,7 +55,7 @@ def vote(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+        return redirect(reverse("polls:results", args=(question.id,)))
     
 
 def new_poll(request):
@@ -67,7 +66,7 @@ def new_poll(request):
             return redirect('polls:add_choice', question_id=question.pk)
     else:
         q_form=QuestionForm()
-    return render(request,'polls/new_poll.html',{'q_form':q_form})
+    return render(request,'polls/new_poll.html',context={'q_form':q_form})
     
 
 def add_choice(request, question_id):
@@ -75,6 +74,7 @@ def add_choice(request, question_id):
     if request.method == 'POST':
         form = VoteForm(request.POST)
         if form.is_valid():
+            #choice=form.save()
             choice = form.save(commit=False)
             choice.question = question
             choice.save()
@@ -83,3 +83,15 @@ def add_choice(request, question_id):
     else:
         form = VoteForm()
     return render(request, 'polls/add_choice.html', {'form': form, 'question': question})
+
+def delete_poll(request,question_id):
+    question=get_object_or_404(Question, pk=question_id)
+    question.delete()
+    return redirect(reverse('polls:index'))
+
+def delete_choice(request,choice_id):
+    choice=get_object_or_404(Choice,pk=choice_id)
+    question_id=choice.question.id
+    choice.delete()
+    return redirect(reverse('polls:detail', args=(question_id,)))
+    
