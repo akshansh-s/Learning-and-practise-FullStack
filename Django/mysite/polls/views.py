@@ -31,6 +31,7 @@ def index(request):
 def detail(request, question_id):
     try:
         question = Question.objects.get(pk=question_id)
+        #filter
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request, "polls/detail.html", {"question": question})
@@ -95,3 +96,9 @@ def delete_choice(request,choice_id):
     choice.delete()
     return redirect(reverse('polls:detail', args=(question_id,)))
     
+#forms -> api
+#restful apis
+#django queries (eg. fetch all questions in specific range)
+#online store cart - for complex queries
+#sorting
+#oos- show
