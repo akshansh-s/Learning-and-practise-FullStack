@@ -35,6 +35,7 @@ router.register(r'users', UserViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('polls/',include("polls.urls")),
+    path('shopping/',include("cart.urls")),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls'))
 ]
