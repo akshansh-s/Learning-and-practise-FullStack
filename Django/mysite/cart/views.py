@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Category, Product, CartItem
 import json
 
+#serializers, decorators (this), generic, viewset
 @csrf_exempt
 def category_request(request, category_id=None):
     if request.method == 'GET':
@@ -58,6 +59,7 @@ def product_request(request, product_id=None):
         #         return JsonResponse({'error': 'Product not found'}, status=404)
         #     return JsonResponse({'id': product.id, 'name': product.name})
             products = Product.objects.filter(id=product_id).values('id', 'name', 'description', 'price', 'stock', 'category_id')
+            #use serialzer
             if not products:
                 return JsonResponse({'error': 'Product not found'}, status=404)
             return JsonResponse({'product': list(products)[0]})
@@ -113,7 +115,7 @@ def cart_item_request(request, cart_item_id=None):
             cart_items = CartItem.objects.all()
             return JsonResponse({'cart_items': list(cart_items.values('id', 'product_id', 'quantity'))}, safe=False)
 
-    data = json.loads(request.body)
+    #data = json.loads(request.body)
 
     if request.method == 'POST':
         # cart_item = CartItem.objects.create(
