@@ -5,7 +5,7 @@ def fetch_data(wschemecodes):
     URL = 'https://fundsapi.wealthy.in/api/v2/mf-funds/'
     HEADER = {'protected'}
     test=0
-    results = []  
+    results = [] 
     missing_isin_list=[]
     
     for code in wschemecodes:
@@ -46,8 +46,8 @@ def fetch_data(wschemecodes):
                         "year_trail": year_trail
                     }
                 if isin_code:
-                    #results.append(required_data)
-                    print(isin_code)
+                    results.append(required_data)
+                    #print(isin_code)
                 else:
                     missing_isin_list.append(required_data)
         else:
@@ -56,19 +56,19 @@ def fetch_data(wschemecodes):
     return results, missing_isin_list
 
 
-wschemecodes=['IN966L01CQ2','MSBIL121DGO','INF179KC1ID2', 'INF082J01465', 'INF090I01197', 'INF090I01221','INF192K01932', 'INF090I01536''INF090I01866', 'INF090I01940', 'INF090I01973', 'INF090I01AA5', 'INF0K1H01115', 'INF109K01JK9']
+#wschemecodes=['IN966L01CQ2','MSBIL121DGO','INF179KC1ID2', 'INF082J01465', 'INF090I01197', 'INF090I01221','INF192K01932', 'INF090I01536''INF090I01866', 'INF090I01940', 'INF090I01973', 'INF090I01AA5', 'INF0K1H01115', 'INF109K01JK9']
 fetched_data, missing_isin_list = fetch_data(wschemecodes)
 
 json_data = json.dumps(fetched_data, indent=4)
 #print(json_data)
 
 
-file = "/Users/wealthy/Desktop/fetched_data_final.json"
+file = "/Users/wealthy/Desktop/fetched_data.json"
 with open(file, 'w') as file:
     file.write(json_data)
 
 missing_isin_data = json.dumps(missing_isin_list, indent=4)
-missing_isin_file_path = "/Users/wealthy/Desktop/missing_isin_data_final.json"
+missing_isin_file_path = "/Users/wealthy/Desktop/missing_isin_data2.json"
 with open(missing_isin_file_path, 'w') as file:
     file.write(missing_isin_data)
 
